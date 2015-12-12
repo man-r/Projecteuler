@@ -9,16 +9,16 @@ class Solution {
     int max = (int)Math.pow(10, digits) - 1;
 
     int palindrome = 0;
-    for (int i = max; i >= min ; i--) {
+    for (int i = max; i >= min; i--) {
 
-      for (int j = max; j >= min; j--) {
+      for (int j = i; j >= min; j--) {
 
           int x = i * j;
-
+          if (x < palindrome) {
+            break;
+          }
           if (isPalindrome(x)) {
-            if (x > palindrome) {
-              palindrome = x;
-            }
+            palindrome = x;
           }
       }
     }

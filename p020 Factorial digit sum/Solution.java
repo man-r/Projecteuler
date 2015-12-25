@@ -12,7 +12,8 @@ class Solution {
     for (int i = n; i > 0; i--) {
       factorial = factorial.multiply(new BigInteger(""+i));
     }
-System.out.println(n + "! is : " + factorial.toString());
+
+    System.out.println(n + "! is : " + factorial.toString());
     long result = 0;
 
     while(factorial.max(BigInteger.ONE).equals(factorial)) {

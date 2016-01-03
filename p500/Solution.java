@@ -7,7 +7,7 @@ class Solution {
 
   public static void main(String[] args) {
     long startTime = System.currentTimeMillis();
-    BigInteger i = BigInteger.ONE;
+    BigInteger x = BigInteger.ONE;
 
     ArrayList<BigInteger> primes = new ArrayList<BigInteger>();
     try {
@@ -15,11 +15,11 @@ class Solution {
       String str;
 
       while ((str = in.readLine()) != null) {
-        i = new BigInteger(str);
-        primes.add(i);
+        x = new BigInteger(str);
+        primes.add(x);
       }
 
-      System.out.println("last prime is: " + i);
+      System.out.println("last prime is: " + x);
 
     } catch (IOException e) {
       System.out.println("file not found");
@@ -29,24 +29,25 @@ class Solution {
     devisorsTarget = devisorsTarget.pow(500500);
 
     if (primes.size() > 0) {
-      i = i.add(BigInteger.ONE);
-      i = i.add(BigInteger.ONE);
+      x = x.add(BigInteger.ONE);
+      x = x.add(BigInteger.ONE);
     }
-    if (i.equals(new BigInteger("2"))) {
-      i = i.subtract(BigInteger.ONE);
+    if (x.equals(new BigInteger("2"))) {
+      x = x.subtract(BigInteger.ONE);
     }
 
     try {
       BufferedWriter out = new
       BufferedWriter(new FileWriter("../primes.txt", true));
-      while(i.min(new BigInteger("50000000")).equals(i)) {
-        if (isPrime(i, primes)) {
-          primes.add(i);
-          out.append(i.toString());
+
+      while(x.min(new BigInteger("50000000")).equals(x)) {
+        if (isPrime(x, primes)) {
+          primes.add(x);
+          out.append(x.toString());
           out.newLine();
         }
-        i = i.add(BigInteger.ONE);
-        i = i.add(BigInteger.ONE);
+        x = x.add(BigInteger.ONE);
+        x = x.add(BigInteger.ONE);
       }
 
       out.close();
@@ -60,25 +61,48 @@ class Solution {
 
 
 
-    BigInteger result = BigInteger.ZERO;
+    ArrayList<BigInteger> factorsPow = new ArrayList<BigInteger>();
+    BigInteger result = BigInteger.ONE;
 
     //devisorsTarget = new BigInteger("16");
-    i = devisorsTarget.multiply(new BigInteger("2"));
 
-    while (result.equals(BigInteger.ZERO) ) {
-      if (devisorsCount(i, primes).equals(devisorsTarget)) {
-        result = i;
-      }
-
-      i = i.add(BigInteger.ONE);
-      //System.out.println(i.toString());
+    for (int i = 0; i < primes.size(); i++) {
+      factorsPow.add(BigInteger.ZERO);
     }
 
-    System.out.println(result);
-    System.out.println("answer modulo 500500507: " + result.mod(new BigInteger("500500507")));
+    factorsPow.set(0, devisorsTarget.subtract(BigInteger.ONE));
+    result = factorsProduct(primes, factorsPow);
+
+    System.out.println("result = s^target-1: " + result.equals(pow(new BigInteger("2"), devisorsTarget)));
+
+    // System.out.println(result);
+    // System.out.println("answer modulo 500500507: " + result.mod(new BigInteger("500500507")));
     System.out.println("totalTime: " + (System.currentTimeMillis() - startTime) + " milliseconds");
   }
 
+  static BigInteger factorsProduct(ArrayList<BigInteger> primes, ArrayList<BigInteger> factorsPow) {
+    if (primes.size() != factorsPow.size()) {
+      return BigInteger.ZERO;
+    }
+
+    BigInteger product = BigInteger.ONE;
+
+    for (int i = 0; i < primes.size(); i++) {
+      product = product.multiply(pow(primes.get(i), factorsPow.get(i)));
+    }
+
+    return product;
+  }
+
+  static BigInteger pow(BigInteger base, BigInteger exponent) {
+    BigInteger result = BigInteger.ONE;
+    while (exponent.signum() > 0) {
+      if (exponent.testBit(0)) result = result.multiply(base);
+      base = base.multiply(base);
+      exponent = exponent.shiftRight(1);
+    }
+    return result;
+  }
 
   static BigInteger devisorsCount(BigInteger n, ArrayList<BigInteger> primes) {
 

@@ -1,6 +1,5 @@
 import java.util.*;
-import java.io.*;
-import java.math.*;
+
 class Solution {
 
   public static void main(String[] args) {
@@ -33,10 +32,5 @@ class Solution {
       }
     }
     System.out.println("totalTime: " + (System.currentTimeMillis() - startTime) + " milliseconds");
-  }
-
-  static boolean isPentagon(ArrayList<BigInteger> pentagon) {
-
-    return false;
   }
 }

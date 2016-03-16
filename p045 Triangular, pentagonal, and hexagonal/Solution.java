@@ -7,7 +7,7 @@ class Solution {
   public static void main(String[] args) {
     long startTime = System.currentTimeMillis();
 
-    long t = 2;
+    long t = 286;
     long p = 2;
     long h = 2;
 
@@ -19,7 +19,9 @@ class Solution {
       BigInteger hexagon  = new BigInteger("" + h * ( ( 2 * h ) - 1 ));
 
       System.out.println("triangle : " + triangle + " t: " + t + "  p: " + p + "  h: " + h);
-
+      for (; pentagon.min(triangle).equals(triangle); p--) {
+        pentagon = new BigInteger("" + p * ( ( 3 * p ) - 1 ) /2);
+      }
       for (; !found && (pentagon.min(triangle).equals(pentagon) || pentagon.equals(triangle)); p++) {
         pentagon = new BigInteger("" + p * ( ( 3 * p ) - 1 ) /2);
         System.out.println("pentagon : " + pentagon  + " t: " + t + "  p: " + p + "  h: " + h);
